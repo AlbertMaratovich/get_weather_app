@@ -1,0 +1,7 @@
+//
+//  NetworkService.swift
+//  get_weather_app
+//
+//  Created by Albert Gimalov on 08.02.2026.
+//
+

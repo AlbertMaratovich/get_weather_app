@@ -9,10 +9,15 @@
 /* Begin PBXBuildFile section */
 		DE892E2A2F377F6400F12A5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE892E292F377F6400F12A5B /* AppDelegate.swift */; };
 		DE892E2C2F377F6400F12A5B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE892E2B2F377F6400F12A5B /* SceneDelegate.swift */; };
-		DE892E2E2F377F6400F12A5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE892E2D2F377F6400F12A5B /* ViewController.swift */; };
+		DE892E2E2F377F6400F12A5B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE892E2D2F377F6400F12A5B /* LoginViewController.swift */; };
 		DE892E312F377F6400F12A5B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE892E2F2F377F6400F12A5B /* Main.storyboard */; };
 		DE892E332F377F6700F12A5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE892E322F377F6700F12A5B /* Assets.xcassets */; };
 		DE892E362F377F6700F12A5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE892E342F377F6700F12A5B /* LaunchScreen.storyboard */; };
+		DEA23A4A2F3891A7003D3B63 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A492F389193003D3B63 /* LoginViewModel.swift */; };
+		DEA23A4C2F389C93003D3B63 /* CityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A4B2F389C84003D3B63 /* CityViewController.swift */; };
+		DEA23A4E2F389CA3003D3B63 /* CityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A4D2F389C99003D3B63 /* CityViewModel.swift */; };
+		DEA23A512F389CE5003D3B63 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A502F389CD1003D3B63 /* WeatherViewModel.swift */; };
+		DEA23A532F389D54003D3B63 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A522F389D37003D3B63 /* WeatherViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,13 +41,20 @@
 		DE892E262F377F6400F12A5B /* get_weather_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = get_weather_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE892E292F377F6400F12A5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE892E2B2F377F6400F12A5B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DE892E2D2F377F6400F12A5B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DE892E2D2F377F6400F12A5B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DE892E302F377F6400F12A5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DE892E322F377F6700F12A5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE892E352F377F6700F12A5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE892E372F377F6700F12A5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE892E3C2F377F6700F12A5B /* get_weather_appTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = get_weather_appTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE892E462F377F6700F12A5B /* get_weather_appUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = get_weather_appUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DEA23A492F389193003D3B63 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		DEA23A4B2F389C84003D3B63 /* CityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityViewController.swift; sourceTree = "<group>"; };
+		DEA23A4D2F389C99003D3B63 /* CityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityViewModel.swift; sourceTree = "<group>"; };
+		DEA23A502F389CD1003D3B63 /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
+		DEA23A522F389D37003D3B63 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
+		DEA23A552F389D9C003D3B63 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		DEA23A562F389DBF003D3B63 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -86,6 +98,7 @@
 		DE892E1D2F377F6400F12A5B = {
 			isa = PBXGroup;
 			children = (
+				DEA23A542F389D8C003D3B63 /* Services */,
 				DE892E5B2F37881300F12A5B /* Application */,
 				DE892E5C2F37882D00F12A5B /* Screens */,
 				DE892E5D2F37883F00F12A5B /* Models */,
@@ -119,8 +132,9 @@
 		DE892E5C2F37882D00F12A5B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				DE892E612F37892200F12A5B /* MainScreen */,
 				DE892E602F37891300F12A5B /* LoginScreen */,
+				DE892E612F37892200F12A5B /* CitySelectionScreen */,
+				DEA23A4F2F389CB1003D3B63 /* WeatherDetails */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -128,6 +142,7 @@
 		DE892E5D2F37883F00F12A5B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				DEA23A562F389DBF003D3B63 /* Weather.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -153,16 +168,36 @@
 		DE892E602F37891300F12A5B /* LoginScreen */ = {
 			isa = PBXGroup;
 			children = (
+				DE892E2D2F377F6400F12A5B /* LoginViewController.swift */,
+				DEA23A492F389193003D3B63 /* LoginViewModel.swift */,
 			);
 			path = LoginScreen;
 			sourceTree = "<group>";
 		};
-		DE892E612F37892200F12A5B /* MainScreen */ = {
+		DE892E612F37892200F12A5B /* CitySelectionScreen */ = {
 			isa = PBXGroup;
 			children = (
-				DE892E2D2F377F6400F12A5B /* ViewController.swift */,
+				DEA23A4B2F389C84003D3B63 /* CityViewController.swift */,
+				DEA23A4D2F389C99003D3B63 /* CityViewModel.swift */,
 			);
-			path = MainScreen;
+			path = CitySelectionScreen;
+			sourceTree = "<group>";
+		};
+		DEA23A4F2F389CB1003D3B63 /* WeatherDetails */ = {
+			isa = PBXGroup;
+			children = (
+				DEA23A522F389D37003D3B63 /* WeatherViewController.swift */,
+				DEA23A502F389CD1003D3B63 /* WeatherViewModel.swift */,
+			);
+			path = WeatherDetails;
+			sourceTree = "<group>";
+		};
+		DEA23A542F389D8C003D3B63 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				DEA23A552F389D9C003D3B63 /* NetworkService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,9 +344,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE892E2E2F377F6400F12A5B /* ViewController.swift in Sources */,
+				DE892E2E2F377F6400F12A5B /* LoginViewController.swift in Sources */,
+				DEA23A4E2F389CA3003D3B63 /* CityViewModel.swift in Sources */,
+				DEA23A4C2F389C93003D3B63 /* CityViewController.swift in Sources */,
+				DEA23A512F389CE5003D3B63 /* WeatherViewModel.swift in Sources */,
 				DE892E2A2F377F6400F12A5B /* AppDelegate.swift in Sources */,
+				DEA23A532F389D54003D3B63 /* WeatherViewController.swift in Sources */,
 				DE892E2C2F377F6400F12A5B /* SceneDelegate.swift in Sources */,
+				DEA23A4A2F3891A7003D3B63 /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
