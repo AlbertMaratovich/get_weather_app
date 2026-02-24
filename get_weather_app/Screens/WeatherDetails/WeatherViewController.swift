@@ -14,12 +14,23 @@ class WeatherViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var todayInLabel: UILabel!
     
     let viewModel: WeatherViewModel = WeatherViewModel()
+    let service = NetworkService()
     var city: String = ""
+    var forecast: [WeatherData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print("1. viewDidLoad Иерархия создана, но экран еще не виден")
+        
+        // скорее всего нужно будет перенести на прошлый экран после нажатия на кнопку и выводить валидацию в случае ошибки. доделать
+        Task {
+            do {
+                forecast = try await service.getWeather(city: city)
+            } catch {
+                print("Не прошла валидация данных", error)
+            }
+        }
         
         tableView.accessibilityIdentifier = "weather_table_view"
         
@@ -31,14 +42,14 @@ class WeatherViewController: UIViewController, UITableViewDataSource {
     
     // расчет количества строк, которые необходимо отрисовать
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.forecast.count
+        return forecast.count
     }
     
     // определяет что именно отрисовывается в каждой ячейке таблицы
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
         
-        let weather = viewModel.forecast[indexPath.row]
+        let weather = forecast[indexPath.row]
         cell.textLabel?.text = "\(weather.timeOfDay): \(weather.temp)"
         
         cell.accessibilityIdentifier = "weather_cell_\(indexPath.row)"

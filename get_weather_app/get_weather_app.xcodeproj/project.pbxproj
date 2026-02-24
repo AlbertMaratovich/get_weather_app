@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE8784802F4AB66400E9D01F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DE87847F2F4AB66400E9D01F /* Alamofire */; };
 		DE892E2A2F377F6400F12A5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE892E292F377F6400F12A5B /* AppDelegate.swift */; };
 		DE892E2C2F377F6400F12A5B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE892E2B2F377F6400F12A5B /* SceneDelegate.swift */; };
 		DE892E2E2F377F6400F12A5B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE892E2D2F377F6400F12A5B /* LoginViewController.swift */; };
@@ -18,6 +19,8 @@
 		DEA23A4E2F389CA3003D3B63 /* CityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A4D2F389C99003D3B63 /* CityViewModel.swift */; };
 		DEA23A512F389CE5003D3B63 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A502F389CD1003D3B63 /* WeatherViewModel.swift */; };
 		DEA23A532F389D54003D3B63 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A522F389D37003D3B63 /* WeatherViewController.swift */; };
+		DEB96CEE2F4CA2AE00A17122 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A552F389D9C003D3B63 /* NetworkService.swift */; };
+		DEB96CEF2F4CA9FC00A17122 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A562F389DBF003D3B63 /* Weather.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE8784802F4AB66400E9D01F /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +221,7 @@
 			);
 			name = get_weather_app;
 			packageProductDependencies = (
+				DE87847F2F4AB66400E9D01F /* Alamofire */,
 			);
 			productName = get_weather_app;
 			productReference = DE892E262F377F6400F12A5B /* get_weather_app.app */;
@@ -300,6 +305,9 @@
 			);
 			mainGroup = DE892E1D2F377F6400F12A5B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				DE87847E2F4AB66400E9D01F /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DE892E272F377F6400F12A5B /* Products */;
 			projectDirPath = "";
@@ -348,6 +356,8 @@
 				DEA23A4E2F389CA3003D3B63 /* CityViewModel.swift in Sources */,
 				DEA23A4C2F389C93003D3B63 /* CityViewController.swift in Sources */,
 				DEA23A512F389CE5003D3B63 /* WeatherViewModel.swift in Sources */,
+				DEB96CEF2F4CA9FC00A17122 /* Weather.swift in Sources */,
+				DEB96CEE2F4CA2AE00A17122 /* NetworkService.swift in Sources */,
 				DE892E2A2F377F6400F12A5B /* AppDelegate.swift in Sources */,
 				DEA23A532F389D54003D3B63 /* WeatherViewController.swift in Sources */,
 				DE892E2C2F377F6400F12A5B /* SceneDelegate.swift in Sources */,
@@ -719,6 +729,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DE87847E2F4AB66400E9D01F /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.11.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DE87847F2F4AB66400E9D01F /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DE87847E2F4AB66400E9D01F /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DE892E1E2F377F6400F12A5B /* Project object */;
 }
