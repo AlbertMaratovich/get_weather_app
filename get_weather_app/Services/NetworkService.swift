@@ -9,8 +9,9 @@ import Alamofire
 import Foundation
 
 class NetworkService {
-    let decoder = JSONDecoder()
+    private let decoder = JSONDecoder()
     
+    // отправляет запрос за долготой и широтой по названию города
     private func getCredentials(city: String) async throws -> Weather {
         let url = "https://geocoding-api.open-meteo.com/v1/search"
         let parameters: [String: Any] = [
@@ -19,29 +20,23 @@ class NetworkService {
             "format": "json"
             ]
         
+        // создает запрос и заносит в перемнную request
         let request = AF.request(url, parameters: parameters)
-            
-        request.cURLDescription { curl in
-            print("----- cURL getCredentials -----")
-            print(curl)
-        }
         
-        let  response = try await request.serializingData().value
+        // отправляет запрос и заносит ответ в переменную response
+        let response = try await request.serializingData().value
         
-        if let body = String(data: response, encoding: .utf8) {
-            print("----- RESPONSE BODY getCredentials -----")
-            print(body)
-        }
-        
+        // декодинг в json по заранее созданной структурет CityResult
         let data = try decoder.decode(CityResult.self, from: response)
         
         guard let credentials = data.results.first else {
                 throw AFError.responseValidationFailed(reason: .dataFileNil)
             }
-        print(credentials)
+
         return credentials
     }
     
+    // отправляет запрос по координатам
     private func getWeatherByCredentials(lat: Double, lon: Double) async throws -> Temperature {
         let url = "https://api.open-meteo.com/v1/forecast"
         let parameters: [String: Any] = [
@@ -51,26 +46,19 @@ class NetworkService {
             "timezone": "auto"
         ]
         
+        // создает запрос и заносит в перемнную request
         let request = AF.request(url, parameters: parameters)
-            
-        request.cURLDescription { curl in
-            print("----- cURL getWeatherByCredentials -----")
-            print(curl)
-        }
         
+        // отправляет запрос и заносит ответ в переменную response
         let response = try await request.serializingData().value
         
-        if let body = String(data: response, encoding: .utf8) {
-            print("----- RESPONSE BODY getWeatherByCredentials-----")
-            print(body)
-        }
-        
+        // декодинг в json по заранее созданной структурет WeatherResponse
         let data = try decoder.decode(WeatherResponse.self, from: response)
         
         return data.hourly
     }
     
-    //
+    // получение погоды по схеме утро-день-вечер-ночь
     public func getWeather(city: String) async throws -> [WeatherData] {
         let credentials = try await getCredentials(city: city)
         let temperature = try await getWeatherByCredentials(lat: credentials.latitude, lon: credentials.longitude)
@@ -86,7 +74,6 @@ class NetworkService {
             WeatherData(timeOfDay: "Evening", temp: evening),
             WeatherData(timeOfDay: "Night", temp: night)
         ]
-        print(forecast)
         return forecast
     }
 }

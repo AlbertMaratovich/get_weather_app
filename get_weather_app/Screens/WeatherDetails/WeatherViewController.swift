@@ -13,7 +13,6 @@ class WeatherViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var todayInLabel: UILabel!
     
-    let viewModel: WeatherViewModel = WeatherViewModel()
     let service = NetworkService()
     var city: String = ""
     var forecast: [WeatherData] = []
@@ -21,17 +20,7 @@ class WeatherViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("1. viewDidLoad Иерархия создана, но экран еще не виден")
-        
-        // скорее всего нужно будет перенести на прошлый экран после нажатия на кнопку и выводить валидацию в случае ошибки. доделать
-        Task {
-            do {
-                forecast = try await service.getWeather(city: city)
-            } catch {
-                print("Не прошла валидация данных", error)
-            }
-        }
-        
+        print("1. WeatherViewController viewDidLoad Иерархия создана, но экран еще не виден")
         tableView.accessibilityIdentifier = "weather_table_view"
         
         // Привязка контроллера, задающего данные для таблицы
@@ -40,8 +29,19 @@ class WeatherViewController: UIViewController, UITableViewDataSource {
         todayInLabel.text = "Today in \(city)"
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("2. WeatherViewController viewWillAppear Экран почти загрузился")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("3. WeatherViewController viewDidAppear Экран полностью отрисован. Можно запускать анимашки")
+    }
+    
     // расчет количества строк, которые необходимо отрисовать
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(forecast.count)
         return forecast.count
     }
     
@@ -51,26 +51,21 @@ class WeatherViewController: UIViewController, UITableViewDataSource {
         
         let weather = forecast[indexPath.row]
         cell.textLabel?.text = "\(weather.timeOfDay): \(weather.temp)"
-        
         cell.accessibilityIdentifier = "weather_cell_\(indexPath.row)"
         
         return cell
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        print("2. viewWillAppear Экран почти загрузился")
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("3. viewDidAppear Экран полностью отрисован. Можно запускать анимашки")
     }
     
     // реализация перехода на предыдущий экран
     @IBAction func backButtonPressed(_ sender: Any) {
         // удаляет текущий экран и возвращает на предыдущий
         print("Нажата кнопка Назад")
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    // реализация жеста свайп-бэк
+    @IBAction func swipeToCityView(_ sender: Any) {
+        print("Выполнен жест назад")
         self.navigationController?.popViewController(animated: true)
     }
 }
