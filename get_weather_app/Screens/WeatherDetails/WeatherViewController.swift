@@ -41,15 +41,14 @@ class WeatherViewController: UIViewController, UITableViewDataSource {
     
     // расчет количества строк, которые необходимо отрисовать
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(forecast.count)
         return forecast.count
     }
     
     // определяет что именно отрисовывается в каждой ячейке таблицы
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
-        
         let weather = forecast[indexPath.row]
+        
         cell.textLabel?.text = "\(weather.timeOfDay): \(weather.temp)"
         cell.accessibilityIdentifier = "weather_cell_\(indexPath.row)"
         
