@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import _LocationEssentials
+import CoreLocation
 
 class CityViewController: UIViewController {
     
@@ -18,10 +20,13 @@ class CityViewController: UIViewController {
     let service = NetworkService()
     let cityViewModel = CityViewModel()
     var forecast: [WeatherData] = []
+    let locationService = LocationService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         cityField.delegate = self
+        
         print("1. CityViewController viewDidLoad Иерархия создана, но экран еще не виден")
     }
     
@@ -81,6 +86,48 @@ class CityViewController: UIViewController {
             let destinationVC = segue.destination as! WeatherViewController
             destinationVC.city = cityField.text ?? ""
             destinationVC.forecast = forecast
+        }
+    }
+    
+    // нажатие на кнопку получения погоды по геолокации
+    @IBAction func getCityByLocation(_ sender: Any) {
+        print("Нажата получения погоды по геолокации")
+
+        Task {
+            do {
+                cityLoader.isHidden = false
+                
+                let coordinate = try await locationService.requestLocation()
+                print("Отправляем запрос пермишена")
+                
+                forecast = try await service.getWeatherByGeo(lat: coordinate.latitude, lon: coordinate.longitude)
+                print("Отправляем запрос за погодой")
+                
+                performSegue(withIdentifier: "goToWeatherScreen", sender: self)
+                
+                cityLoader.isHidden = true
+            } catch let locationError as LocationError{
+                validationErrorLabel.isHidden = false
+                cityLoader.isHidden = true
+                
+                switch locationError {
+                case .permissionDenied:
+                    print("Пользователь запретил доступ к геолокации")
+                    validationErrorLabel.text = "Access denied"
+                case .noLocation:
+                    print("Не удалось определить координаты")
+                    validationErrorLabel.text = "Can't define location"
+                case .unknown:
+                    print("Неизвестная ошибка геолокации")
+                    validationErrorLabel.text = "Unknown locationerror"
+                }
+            } catch {
+                validationErrorLabel.isHidden = false
+                cityLoader.isHidden = true
+                validationErrorLabel.text = "Can't find this city. Try again"
+                
+                print("Сетевая ошибка:\n", error)
+            }
         }
     }
     

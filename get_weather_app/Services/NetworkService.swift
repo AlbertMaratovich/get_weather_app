@@ -76,4 +76,21 @@ class NetworkService {
         ]
         return forecast
     }
+    
+    public func getWeatherByGeo(lat: Double, lon: Double) async throws -> [WeatherData] {
+        let temperature = try await getWeatherByCredentials(lat: lat, lon: lon)
+        
+        let morning = String(temperature.temperature_2m[8]) + " °C"
+        let afternoon = String(temperature.temperature_2m[13]) + " °C"
+        let evening = String(temperature.temperature_2m[19]) + " °C"
+        let night = String(temperature.temperature_2m[24]) + " °C"
+        
+        let forecast = [
+            WeatherData(timeOfDay: "Morning", temp: morning),
+            WeatherData(timeOfDay: "Afternoon", temp: afternoon),
+            WeatherData(timeOfDay: "Evening", temp: evening),
+            WeatherData(timeOfDay: "Night", temp: night)
+        ]
+        return forecast
+    }
 }

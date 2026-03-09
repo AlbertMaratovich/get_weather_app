@@ -144,6 +144,16 @@
                                 <rect key="frame" x="186" y="172" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QNi-5D-jhN">
+                                <rect key="frame" x="83" y="496" width="227" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" identifier="wethaerByLocation"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Weather by my location"/>
+                                <connections>
+                                    <action selector="getCityByLocation:" destination="nRy-Ew-jd4" eventType="touchUpInside" id="t3f-oY-ScC"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Ymq-nh-KVv"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
