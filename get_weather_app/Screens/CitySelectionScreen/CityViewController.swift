@@ -106,7 +106,7 @@ class CityViewController: UIViewController {
                 performSegue(withIdentifier: "goToWeatherScreen", sender: self)
                 
                 cityLoader.isHidden = true
-            } catch let locationError as LocationError{
+            } catch let locationError as LocationError {
                 validationErrorLabel.isHidden = false
                 cityLoader.isHidden = true
                 
