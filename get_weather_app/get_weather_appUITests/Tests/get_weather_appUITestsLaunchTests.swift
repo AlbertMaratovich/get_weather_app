@@ -5,16 +5,14 @@
 //  Created by Albert Gimalov on 07.02.2026.
 //
 
+
+// разобраться кто это вообще и нужно ли
 import XCTest
 
 final class get_weather_appUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
-    }
-
-    override func setUpWithError() throws {
-        continueAfterFailure = false
     }
 
     @MainActor
