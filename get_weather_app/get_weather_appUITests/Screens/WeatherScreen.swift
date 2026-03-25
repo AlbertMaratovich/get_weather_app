@@ -10,6 +10,8 @@ import XCTest
 final class WeatherScreen: BaseScreen {
     var weatherTableView: XCUIElement { app.tables["weather_table_view"].firstMatch }
     var backButton: XCUIElement { app.buttons["back_button"].firstMatch }
+    var exists: Bool { weatherTableView.exists }
+    var firstCell: String { weatherTableView.cells.firstMatch.label }
     let expectedLabels = ["Morning:", "Afternoon:", "Evening:", "Night:"]
     
     func backButtonTap() {
@@ -30,5 +32,9 @@ final class WeatherScreen: BaseScreen {
             }
         }
         return true
+    }
+    
+    func isDisplayed() -> Bool {
+        return weatherTableView.waitForExistence(timeout: 5)
     }
 }

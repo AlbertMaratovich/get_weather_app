@@ -32,6 +32,7 @@
 		DEA23A532F389D54003D3B63 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A522F389D37003D3B63 /* WeatherViewController.swift */; };
 		DEB96CEE2F4CA2AE00A17122 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A552F389D9C003D3B63 /* NetworkService.swift */; };
 		DEB96CEF2F4CA9FC00A17122 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA23A562F389DBF003D3B63 /* Weather.swift */; };
+		DED6B12A2F740DA6007FA976 /* XCUIElement+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED6B1272F740AC9007FA976 /* XCUIElement+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		DEA23A522F389D37003D3B63 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		DEA23A552F389D9C003D3B63 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		DEA23A562F389DBF003D3B63 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
+		DED6B1272F740AC9007FA976 /* XCUIElement+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 				DE892E5F2F37886F00F12A5B /* Supporting Files */,
 				DE7EF9B92F727DE200C7B64B /* get_weather_appTests */,
 				DE7EF9B42F727DDE00C7B64B /* get_weather_appUITests */,
+				DED6B1262F740AB9007FA976 /* Extensions */,
 				DE892E272F377F6400F12A5B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -252,6 +255,14 @@
 				DEA23A552F389D9C003D3B63 /* NetworkService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		DED6B1262F740AB9007FA976 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DED6B1272F740AC9007FA976 /* XCUIElement+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -423,6 +434,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE7EF9B52F727DDE00C7B64B /* AuthTests.swift in Sources */,
+				DED6B12A2F740DA6007FA976 /* XCUIElement+Extension.swift in Sources */,
 				DE7EF9C12F727F6300C7B64B /* CityScreen.swift in Sources */,
 				DE7EF9C92F72B1FD00C7B64B /* GettingWeatherTests.swift in Sources */,
 				DE7EF9BD2F727F3F00C7B64B /* BaseScreen.swift in Sources */,

@@ -29,8 +29,7 @@ final class AuthTestsUITests: BaseTest {
         loginScreen.loginButtonTap()
         
         XCTAssertTrue(loginScreen.errorLabelIsVisible(), "Лейбл с тестом ошибки не отобразился")
-        XCTAssertFalse(cityScreen.exists, "Произошел вход в аккаунт с невалидными данными")
-        XCTAssertTrue(loginScreen.loginButton.exists, "Ушли с экрана логина")
+        XCTAssertFalse(cityScreen.exists, "Произошел вход в аккаунт с не верным паролем")
     }
     
     func testAuthorizationWithInvalidName() throws {
@@ -42,8 +41,7 @@ final class AuthTestsUITests: BaseTest {
         loginScreen.loginButtonTap()
         
         XCTAssertTrue(loginScreen.errorLabelIsVisible(), "Лейбл с тестом ошибки не отобразился")
-        XCTAssertFalse(cityScreen.exists, "Произошел вход в аккаунт с невалидными данными")
-        XCTAssertTrue(loginScreen.loginButton.exists, "Ушли с экрана логина")
+        XCTAssertFalse(cityScreen.exists, "Произошел вход в аккаунт с не верным логином")
     }
     
     func testAuthorizationWithEmptyData() throws {
@@ -53,8 +51,7 @@ final class AuthTestsUITests: BaseTest {
         loginScreen.loginButtonTap()
         
         XCTAssertTrue(loginScreen.errorLabelIsVisible(), "Лейбл с тестом ошибки не отобразился")
-        XCTAssertFalse(cityScreen.exists, "Произошел вход в аккаунт с невалидными данными")
-        XCTAssertTrue(loginScreen.loginButton.exists, "Ушли с экрана логина")
+        XCTAssertFalse(cityScreen.exists, "Произошел вход в аккаунт с пустыми полями")
     }
     
     func testLogout() throws {

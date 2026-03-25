@@ -19,7 +19,9 @@ final class GettingWeatherTests: BaseTest {
         loginScreen.loginButtonTap()
         cityScreen.typeTextCityField("Moscow")
         cityScreen.getWeatherButtonTap()
-        XCTAssertTrue(weatherScreen.validateTable(), "Погода в ячейке не отобразилась")
+        
+        XCTAssertTrue(weatherScreen.isDisplayed(), "Экран погоды не отобразился")
+        XCTAssertTrue(weatherScreen.validateTable(), "Погода в ячейках не отобразилась")
     }
     
     func testGetWeatherByLocation() throws {
@@ -27,11 +29,43 @@ final class GettingWeatherTests: BaseTest {
     }
     
     func testValidationCityField() throws {
+        let cityScreen = CityScreen(app: app)
+        let loginScreen = LoginScreen(app: app)
+        let weatherScreen = WeatherScreen(app: app)
         
+        loginScreen.typeTextLoginField("user")
+        loginScreen.typeTextPasswordField("123456")
+        loginScreen.loginButtonTap()
+        cityScreen.typeTextCityField("Москва")
+        cityScreen.getWeatherButtonTap()
+        
+        XCTAssertTrue(cityScreen.errorLabel.waitForExistence(timeout: 3), "Лейбл ошибки не отобразился при невалидном значении")
+        XCTAssertFalse(weatherScreen.exists, "Поле приняло не валидное значение")
     }
     
     func testGetWeatherRepeat() throws {
+        let cityScreen = CityScreen(app: app)
+        let loginScreen = LoginScreen(app: app)
+        let weatherScreen = WeatherScreen(app: app)
         
+        loginScreen.typeTextLoginField("user")
+        loginScreen.typeTextPasswordField("123456")
+        loginScreen.loginButtonTap()
+        cityScreen.typeTextCityField("Astana")
+        cityScreen.getWeatherButtonTap()
+        
+        XCTAssertTrue(weatherScreen.isDisplayed(), "Экран погоды не отобразился")
+        let firstCityWeather = weatherScreen.firstCell
+        
+        weatherScreen.backButtonTap()
+        cityScreen.cityField.clearText()
+        cityScreen.typeTextCityField("Palermo")
+        cityScreen.getWeatherButtonTap()
+        
+        XCTAssertTrue(weatherScreen.isDisplayed(), "Экран погоды не отобразился")
+        let secondCityWeather = weatherScreen.firstCell
+        
+        XCTAssertTrue(firstCityWeather != secondCityWeather, "Погода не перезагрузилась")
     }
     
     func testGetWeatherAfterAproveOneTimePermisson() throws {
