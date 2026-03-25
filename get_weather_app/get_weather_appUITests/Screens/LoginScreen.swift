@@ -31,4 +31,8 @@ final class LoginScreen: BaseScreen {
     func errorLabelIsVisible() -> Bool {
         return loginErrorLabel.waitForExistence(timeout: 3)
     }
+    
+    func isDisplayed() -> Bool {
+        return loginButton.waitForExistence(timeout: 3)
+    }
 }

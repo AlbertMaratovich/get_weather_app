@@ -56,4 +56,16 @@ final class AuthTestsUITests: BaseTest {
         XCTAssertFalse(cityScreen.exists, "Произошел вход в аккаунт с невалидными данными")
         XCTAssertTrue(loginScreen.loginButton.exists, "Ушли с экрана логина")
     }
+    
+    func testLogout() throws {
+        let loginScreen = LoginScreen(app: app)
+        let cityScreen = CityScreen(app: app)
+
+        loginScreen.typeTextLoginField("user")
+        loginScreen.typeTextPasswordField("123456")
+        loginScreen.loginButtonTap()
+        cityScreen.logoutButtonTap()
+        
+        XCTAssertTrue(loginScreen.isDisplayed(), "Не удалось выйти из аккаунта")
+    }
 }
