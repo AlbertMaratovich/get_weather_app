@@ -7,25 +7,25 @@
 import XCTest
 
 final class LoginScreen: BaseScreen {
-    var loginField: XCUIElement { app.textFields["name_field"] }
-    var passwordField: XCUIElement { app.textFields["password_field"] }
-    var loginButton: XCUIElement { app.buttons["login_button"] }
-    var loginErrorLabel: XCUIElement { app.staticTexts["loginError"] }
+    var loginField: XCUIElement { app.textFields["name_field"].firstMatch }
+    var passwordField: XCUIElement { app.textFields["password_field"].firstMatch }
+    var loginButton: XCUIElement { app.buttons["login_button"].firstMatch }
+    var loginErrorLabel: XCUIElement { app.staticTexts["loginError"].firstMatch }
     
     func typeTextLoginField(_ text: String) {
-        loginField.tap()
+        loginField.safeTap()
         loginField.typeText(text)
         hideKeyboard()
     }
     
     func typeTextPasswordField(_ text: String) {
-        passwordField.tap()
+        passwordField.safeTap()
         passwordField.typeText(text)
         hideKeyboard()
     }
     
     func loginButtonTap() {
-        loginButton.tap()
+        loginButton.safeTap()
     }
     
     func errorLabelIsVisible() -> Bool {

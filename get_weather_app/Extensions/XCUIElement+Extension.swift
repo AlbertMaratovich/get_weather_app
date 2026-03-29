@@ -27,4 +27,21 @@ extension XCUIElement {
             XCTFail("Ошибка: не удалось вызвать меню 'Cut' для очистки поля \(self.description) после двух попыток")
         }
     }
+    
+    // Делает безопасный тап с проверками и ожиданиями доступности элемента
+    public func safeTap() -> Void {
+        if self.waitForExistence(timeout: 3) {
+            if self.isHittable {
+                self.tap()
+            } else {
+                XCTFail(
+                    "Ошибка: элемент \(self.description) не доступен для нажатия"
+                )
+            }
+        } else {
+            XCTFail(
+                "Ошибка: элемент \(self.description) не найден"
+            )
+        }
+    }
 }

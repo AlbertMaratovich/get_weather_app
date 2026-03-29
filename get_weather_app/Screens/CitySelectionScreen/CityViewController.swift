@@ -21,6 +21,7 @@ class CityViewController: UIViewController {
     let cityViewModel = CityViewModel()
     var forecast: [WeatherData] = []
     let locationService = LocationService()
+    var city: String? { cityField.text }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +43,9 @@ class CityViewController: UIViewController {
     
     // реализация функции тапа на кнопку получения погоды
     @IBAction func getWeatherButtonTapped(_ sender: UIButton) {
-        print("Нажата получения погоды")
+        print("Нажата кнопка получения погоды")
         
-        let city = cityField.text ?? ""
+        let city = self.city ?? ""
         
         if cityViewModel.validateCity(city: city) {
             Task {
@@ -54,6 +55,7 @@ class CityViewController: UIViewController {
                     print("Отправляем запрос за погодой")
                     performSegue(withIdentifier: "goToWeatherScreen", sender: self)
                     cityLoader.isHidden = true
+                    cityField.text = nil
                 } catch {
                     print("Не прошла валидация данных", error)
                     validationErrorLabel.text = "Can't find this city. Try again"
@@ -63,7 +65,7 @@ class CityViewController: UIViewController {
             }
         } else {
             print("Validation error")
-            validationErrorLabel.text = "Please enter the valid city name"
+            validationErrorLabel.text = "Please enter valid city name"
             validationErrorLabel.isHidden = false
         }
     }
@@ -84,8 +86,14 @@ class CityViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToWeatherScreen" {
             let destinationVC = segue.destination as! WeatherViewController
-            destinationVC.city = cityField.text ?? ""
-            destinationVC.forecast = forecast
+            destinationVC.forecast = self.forecast
+            if let city = self.city {
+                if city == "" {
+                    destinationVC.city = " your location"
+                } else {
+                    destinationVC.city = city
+                }
+            } else { destinationVC.city = "" }
         }
     }
     
@@ -102,9 +110,7 @@ class CityViewController: UIViewController {
                 
                 forecast = try await service.getWeatherByGeo(lat: coordinate.latitude, lon: coordinate.longitude)
                 print("Отправляем запрос за погодой")
-                
                 performSegue(withIdentifier: "goToWeatherScreen", sender: self)
-                
                 cityLoader.isHidden = true
             } catch let locationError as LocationError {
                 validationErrorLabel.isHidden = false

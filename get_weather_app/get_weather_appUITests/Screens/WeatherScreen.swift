@@ -15,7 +15,7 @@ final class WeatherScreen: BaseScreen {
     let expectedLabels = ["Morning:", "Afternoon:", "Evening:", "Night:"]
     
     func backButtonTap() {
-        backButton.tap()
+        backButton.safeTap()
     }
     
     func validateTable() -> Bool {
@@ -35,6 +35,10 @@ final class WeatherScreen: BaseScreen {
     }
     
     func isDisplayed() -> Bool {
-        return weatherTableView.waitForExistence(timeout: 5)
+        return weatherTableView.waitForExistence(timeout: 10)
+    }
+    
+    func navBarTap() {
+        app.navigationBars.firstMatch.buttons.firstMatch.tap()
     }
 }

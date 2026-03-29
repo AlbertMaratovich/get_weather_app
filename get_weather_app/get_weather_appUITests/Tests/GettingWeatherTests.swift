@@ -25,7 +25,18 @@ final class GettingWeatherTests: BaseTest {
     }
     
     func testGetWeatherByLocation() throws {
+        let cityScreen = CityScreen(app: app)
+        let loginScreen = LoginScreen(app: app)
+        let weatherScreen = WeatherScreen(app: app)
         
+        loginScreen.typeTextLoginField("user")
+        loginScreen.typeTextPasswordField("123456")
+        loginScreen.loginButtonTap()
+        cityScreen.getWeatherByLocationButtonTap()
+        cityScreen.allowOnceLocationPermission()
+        
+        XCTAssertTrue(weatherScreen.isDisplayed(), "Экран погоды не отобразился")
+        XCTAssertTrue(weatherScreen.validateTable(), "Погода в ячейках не отобразилась")
     }
     
     func testValidationCityField() throws {
@@ -66,13 +77,5 @@ final class GettingWeatherTests: BaseTest {
         let secondCityWeather = weatherScreen.firstCell
         
         XCTAssertTrue(firstCityWeather != secondCityWeather, "Погода не перезагрузилась")
-    }
-    
-    func testGetWeatherAfterAproveOneTimePermisson() throws {
-        
-    }
-    
-    func testGetWeatherAfterDenyPermisson() throws {
-        
     }
 }

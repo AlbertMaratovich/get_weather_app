@@ -7,11 +7,11 @@
 import XCTest
 
 final class CityScreen: BaseScreen {
-    var cityField: XCUIElement { app.textFields["city_field"] }
-    var getWeatherButton: XCUIElement { app.buttons["get_weather_button"] }
-    var getWeatherByLocation: XCUIElement { app.buttons["wethaerByLocation"] }
-    var logoutButton: XCUIElement { app.buttons["log_out_button"] }
-    var errorLabel: XCUIElement { app.staticTexts["validationErrorLabel"] }
+    var cityField: XCUIElement { app.textFields["city_field"].firstMatch }
+    var getWeatherButton: XCUIElement { app.buttons["get_weather_button"].firstMatch }
+    var getWeatherByLocation: XCUIElement { app.buttons["wethaerByLocation"].firstMatch }
+    var logoutButton: XCUIElement { app.buttons["log_out_button"].firstMatch }
+    var errorLabel: XCUIElement { app.staticTexts["validationErrorLabel"].firstMatch }
     var exists: Bool { cityField.exists }
     
     func isDisplayed() -> Bool {
@@ -19,15 +19,19 @@ final class CityScreen: BaseScreen {
     }
     
     func logoutButtonTap() {
-        logoutButton.tap()
+        logoutButton.safeTap()
     }
     
     func getWeatherButtonTap() {
-        getWeatherButton.tap()
+        getWeatherButton.safeTap()
+    }
+    
+    func getWeatherByLocationButtonTap() {
+        getWeatherByLocation.safeTap()
     }
     
     func typeTextCityField(_ text: String) {
-        cityField.tap()
+        cityField.safeTap()
         cityField.typeText(text)
         hideKeyboard()
     }
