@@ -6,12 +6,16 @@
 //
 
 import Testing
+import XCTest
 @testable import get_weather_app
 
-struct get_weather_appTests {
+class BaseUnitTest: XCTestCase {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    override func setUp() {
+        super.setUp()
     }
-
+    
+    override func tearDown() {
+        super.tearDown()
+    }
 }

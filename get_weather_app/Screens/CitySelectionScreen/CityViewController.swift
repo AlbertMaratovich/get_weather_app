@@ -100,7 +100,7 @@ class CityViewController: UIViewController {
     // нажатие на кнопку получения погоды по геолокации
     @IBAction func getCityByLocation(_ sender: Any) {
         print("Нажата получения погоды по геолокации")
-
+        
         Task {
             do {
                 cityLoader.isHidden = false
