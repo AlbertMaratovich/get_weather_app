@@ -7,7 +7,7 @@
 
 import CoreLocation
 
-class LocationService: NSObject, CLLocationManagerDelegate {
+class LocationService: NSObject, CLLocationManagerDelegate, LocationServiceProtocol {
 
     let manager = CLLocationManager()
     private var continuation: CheckedContinuation<CLLocationCoordinate2D, Error>?
@@ -21,22 +21,42 @@ class LocationService: NSObject, CLLocationManagerDelegate {
     // MARK: - Async function to get location
     func requestLocation() async throws -> CLLocationCoordinate2D {
 
-        let status = manager.authorizationStatus
+        switch manager.authorizationStatus {
 
-        switch status {
-        case .notDetermined:
-            manager.requestWhenInUseAuthorization()
         case .denied, .restricted:
             throw LocationError.permissionDenied
+
         case .authorizedAlways, .authorizedWhenInUse:
             break
+
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+
         @unknown default:
             throw LocationError.unknown
         }
 
-        return try await withCheckedThrowingContinuation { continuation in
-            self.continuation = continuation
-            manager.requestLocation()
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                self.continuation = continuation
+                manager.requestLocation()
+            }
+        } catch let error as CLError {
+
+            switch error.code {
+
+            case .denied:
+                throw LocationError.permissionDenied
+
+            case .locationUnknown:
+                throw LocationError.noLocation
+
+            default:
+                throw LocationError.unknown
+            }
+
+        } catch {
+            throw LocationError.unknown
         }
     }
 

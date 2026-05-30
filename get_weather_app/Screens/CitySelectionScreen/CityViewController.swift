@@ -20,7 +20,7 @@ class CityViewController: UIViewController {
     let service = NetworkService()
     let cityViewModel = CityViewModel()
     var forecast: [WeatherData] = []
-    let locationService = LocationService()
+    var locationService: LocationServiceProtocol = LocationService()
     var city: String? { cityField.text }
     
     override func viewDidLoad() {
@@ -97,43 +97,45 @@ class CityViewController: UIViewController {
         }
     }
     
+    func loadWeatherByLocation() async {
+        do {
+            let coordinate = try await locationService.requestLocation()
+
+            forecast = try await service.getWeatherByGeo(lat: coordinate.latitude, lon: coordinate.longitude)
+            print("Отправляем запрос за погодой")
+            performSegue(withIdentifier: "goToWeatherScreen", sender: self)
+            cityLoader.isHidden = true
+        } catch let locationError as LocationError {
+            validationErrorLabel.isHidden = false
+            cityLoader.isHidden = true
+            
+            switch locationError {
+            case .permissionDenied:
+                print("Пользователь запретил доступ к геолокации")
+                validationErrorLabel.text = "Access denied"
+            case .noLocation:
+                print("Не удалось определить координаты")
+                validationErrorLabel.text = "Can't define location"
+            case .unknown:
+                print("Неизвестная ошибка геолокации")
+                validationErrorLabel.text = "Unknown locationerror"
+            }
+        } catch {
+            validationErrorLabel.isHidden = false
+            cityLoader.isHidden = true
+            validationErrorLabel.text = "Can't find this city. Try again"
+            
+            print("Сетевая ошибка:\n", error)
+        }
+    }
+    
     // нажатие на кнопку получения погоды по геолокации
     @IBAction func getCityByLocation(_ sender: Any) {
         print("Нажата получения погоды по геолокации")
+        cityLoader.isHidden = false
         
         Task {
-            do {
-                cityLoader.isHidden = false
-                
-                let coordinate = try await locationService.requestLocation()
-                print("Отправляем запрос пермишена")
-                
-                forecast = try await service.getWeatherByGeo(lat: coordinate.latitude, lon: coordinate.longitude)
-                print("Отправляем запрос за погодой")
-                performSegue(withIdentifier: "goToWeatherScreen", sender: self)
-                cityLoader.isHidden = true
-            } catch let locationError as LocationError {
-                validationErrorLabel.isHidden = false
-                cityLoader.isHidden = true
-                
-                switch locationError {
-                case .permissionDenied:
-                    print("Пользователь запретил доступ к геолокации")
-                    validationErrorLabel.text = "Access denied"
-                case .noLocation:
-                    print("Не удалось определить координаты")
-                    validationErrorLabel.text = "Can't define location"
-                case .unknown:
-                    print("Неизвестная ошибка геолокации")
-                    validationErrorLabel.text = "Unknown locationerror"
-                }
-            } catch {
-                validationErrorLabel.isHidden = false
-                cityLoader.isHidden = true
-                validationErrorLabel.text = "Can't find this city. Try again"
-                
-                print("Сетевая ошибка:\n", error)
-            }
+            await loadWeatherByLocation()
         }
     }
     
