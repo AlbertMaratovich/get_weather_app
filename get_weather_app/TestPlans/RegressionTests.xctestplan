@@ -1,0 +1,41 @@
+{
+  "configurations" : [
+    {
+      "id" : "53BB8709-38A2-4E56-B68A-7F94ADB125F7",
+      "name" : "Configuration 1",
+      "options" : {
+        "testRepetitionMode" : "retryOnFailure"
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "skippedTests" : [
+        "BaseUnitTest",
+        "CityViewControllerTests\/testGettingWeatherByPermission()"
+      ],
+      "target" : {
+        "containerPath" : "container:get_weather_app.xcodeproj",
+        "identifier" : "DE892E3B2F377F6700F12A5B",
+        "name" : "get_weather_appTests"
+      }
+    },
+    {
+      "skippedTests" : [
+        "BaseTest",
+        "get_weather_appUITestsLaunchTests",
+        "get_weather_appUITestsLaunchTests\/testLaunch()"
+      ],
+      "target" : {
+        "containerPath" : "container:get_weather_app.xcodeproj",
+        "identifier" : "DE892E452F377F6700F12A5B",
+        "name" : "get_weather_appUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

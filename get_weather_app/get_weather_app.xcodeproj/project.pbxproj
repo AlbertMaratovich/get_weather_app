@@ -94,6 +94,9 @@
 		DEA23A552F389D9C003D3B63 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		DEA23A562F389DBF003D3B63 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		DED6B1272F740AC9007FA976 /* XCUIElement+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extension.swift"; sourceTree = "<group>"; };
+		DEED8A6C2FD5DB4B0052D8E7 /* RegressionTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RegressionTests.xctestplan; sourceTree = "<group>"; };
+		DEED8A6D2FD5DB720052D8E7 /* SmokeTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SmokeTests.xctestplan; sourceTree = "<group>"; };
+		DEED8A6E2FD5DB840052D8E7 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +197,7 @@
 		DE892E1D2F377F6400F12A5B = {
 			isa = PBXGroup;
 			children = (
+				DEED8A692FD531130052D8E7 /* TestPlans */,
 				DEA23A542F389D8C003D3B63 /* Services */,
 				DE892E5B2F37881300F12A5B /* Application */,
 				DE892E5C2F37882D00F12A5B /* Screens */,
@@ -305,6 +309,16 @@
 				DED6B1272F740AC9007FA976 /* XCUIElement+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		DEED8A692FD531130052D8E7 /* TestPlans */ = {
+			isa = PBXGroup;
+			children = (
+				DEED8A6C2FD5DB4B0052D8E7 /* RegressionTests.xctestplan */,
+				DEED8A6D2FD5DB720052D8E7 /* SmokeTests.xctestplan */,
+				DEED8A6E2FD5DB840052D8E7 /* UnitTests.xctestplan */,
+			);
+			path = TestPlans;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

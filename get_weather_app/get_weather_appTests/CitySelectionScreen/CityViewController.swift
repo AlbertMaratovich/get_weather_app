@@ -44,6 +44,7 @@ final class CityViewControllerTests: BaseUnitTest {
     }
     
     // падает из-за performSegue
+    //MARK: Skipped
     @MainActor
     func testGettingWeatherByPermission() async {
         sut.locationService = mockLocationService

@@ -69,7 +69,6 @@ final class GettingWeatherTests: BaseTest {
         let firstCityWeather = weatherScreen.firstCell
         
         weatherScreen.backButtonTap()
-        cityScreen.cityField.clearText()
         cityScreen.typeTextCityField("Palermo")
         cityScreen.getWeatherButtonTap()
         
