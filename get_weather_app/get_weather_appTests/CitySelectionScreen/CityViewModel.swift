@@ -16,10 +16,10 @@ final class CityViewModelTests: BaseUnitTest {
     }
     
     func testValidationCityWithInt() {
-        XCTAssertTrue(viewModel.validateCity(city: "12345"))
+        XCTAssertFalse(viewModel.validateCity(city: "12345"))
     }
     
     func testValidationCityWithInvalidChars() {
-        XCTAssertTrue(viewModel.validateCity(city: "Москва"))
+        XCTAssertFalse(viewModel.validateCity(city: "Москва"))
     }
 }
