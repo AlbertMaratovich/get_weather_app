@@ -12,13 +12,13 @@ class NetworkService {
     private let decoder = JSONDecoder()
     
     // отправляет запрос за долготой и широтой по названию города
-    private func getCredentials(city: String) async throws -> Weather {
+    public func getCredentials(city: String) async throws -> Weather {
         let url = "https://geocoding-api.open-meteo.com/v1/search"
         let parameters: [String: Any] = [
             "name": city,
             "count": 1,
             "format": "json"
-            ]
+        ]
         
         // создает запрос и заносит в перемнную request
         let request = AF.request(url, parameters: parameters)
@@ -31,13 +31,13 @@ class NetworkService {
         
         guard let credentials = data.results.first else {
                 throw AFError.responseValidationFailed(reason: .dataFileNil)
-            }
+        }
 
         return credentials
     }
     
     // отправляет запрос по координатам
-    private func getWeatherByCredentials(lat: Double, lon: Double) async throws -> Temperature {
+    public func getWeatherByCredentials(lat: Double, lon: Double) async throws -> Temperature {
         let url = "https://api.open-meteo.com/v1/forecast"
         let parameters: [String: Any] = [
             "latitude": lat,

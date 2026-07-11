@@ -93,7 +93,7 @@ class CityViewController: UIViewController {
                 } else {
                     destinationVC.city = city
                 }
-            } else { destinationVC.city = "" }
+            } else { destinationVC.city = " your location" }
         }
     }
     
