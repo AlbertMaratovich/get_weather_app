@@ -13,7 +13,9 @@ final class LoginViewControllerTests: BaseUnitTest {
 
     override func setUp() {
         super.setUp()
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
         sut = storyboard.instantiateViewController(identifier: "LoginViewController") as? LoginViewController
         sut.loadViewIfNeeded()
     }

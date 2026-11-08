@@ -10,7 +10,7 @@
 import XCTest
 
 final class WeatherScreenViewControllerTests: BaseUnitTest {
-    var sut: WeatherViewController!
+    private var sut: WeatherViewController!
     
     override func setUp() {
         super.setUp()
@@ -26,6 +26,7 @@ final class WeatherScreenViewControllerTests: BaseUnitTest {
     
     override func tearDown() {
         sut = nil
+        
         super.tearDown()
     }
     
@@ -47,13 +48,12 @@ final class WeatherScreenViewControllerTests: BaseUnitTest {
     @MainActor
     func testTableViewWasLoadWithValidData() async throws {
         let mockNetwork = MockNetworkService()
-        sut.forecast = try await mockNetwork.getWeather(city: "Almaty")
         
+        sut.forecast = try await mockNetwork.getWeather(city: "Almaty")
         sut.tableView.layoutIfNeeded()
         
         let targetRow = 0
         let indexPath = IndexPath(row: targetRow, section: 0)
-        
         let cell = sut.tableView(sut.tableView, cellForRowAt: indexPath)
         
         XCTAssertEqual(cell.textLabel?.text, "Morning: 22.6 °C")

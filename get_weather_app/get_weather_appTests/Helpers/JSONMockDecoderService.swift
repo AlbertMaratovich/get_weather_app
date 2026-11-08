@@ -12,14 +12,13 @@ class DecoderMockService {
         let bundle = Bundle(for: type(of: self))
         
         // проверяем содержимое бандла и выводим в консоль названия файлов
-        print("📍 Ищем файлы по пути: \(bundle.resourcePath ?? "неизвестно")")
+        print("Ищем файлы по пути: \(bundle.resourcePath ?? "неизвестно")")
         if let resourcePath = bundle.resourcePath,
            let files = try? FileManager.default.contentsOfDirectory(atPath: resourcePath) {
-            print("--- 📦 СПИСОК ВСЕХ ФАЙЛОВ В БАНДЛЕ ТЕСТОВ ---")
+            print("--- СПИСОК ВСЕХ ФАЙЛОВ В БАНДЛЕ ТЕСТОВ ---")
             for file in files {
-                print("📄 \(file)")
+                print("\(file)")
             }
-            print("-----------------------------------------")
         }
         
         // Читаем данные из файла
@@ -32,7 +31,7 @@ class DecoderMockService {
                     return Data()
                 }
             } else {
-                print("❌ Не удалось найти файл \(fileName).json")
+                print("Не удалось найти файл \(fileName).json")
                 return Data()
             }
         }

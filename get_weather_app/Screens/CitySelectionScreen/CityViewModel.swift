@@ -8,8 +8,7 @@
 import Foundation
 
 class CityViewModel {
-    let service = NetworkService()
-    
+    var service = NetworkService()
     var forecast: [WeatherData] = []
     
     // валидация города
