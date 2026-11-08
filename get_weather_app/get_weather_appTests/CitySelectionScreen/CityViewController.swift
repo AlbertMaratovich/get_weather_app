@@ -25,19 +25,19 @@ final class CityViewControllerTests: BaseUnitTest {
         sut.loadViewIfNeeded()
     }
 
-//    func testErrorLabelShownWithEmptyCityField() {
-//        sut.getWeatherByCityButtonTapped(getWeatherButton)
-//        
-//        XCTAssertFalse(sut.errorLabel.isHidden)
-//    }
+    func testErrorLabelShownWithEmptyCityField() {
+        sut.getWeatherByCityButtonTapped(getWeatherButton)
+        
+        XCTAssertFalse(sut.errorLabel.isHidden)
+    }
     
-//    func testErrorLabelShownWithWrongCityField() {
-//        sut.cityField.text = "Москва"
-//        
-//        sut.getWeatherByCityButtonTapped(getWeatherButton)
-//        
-//        XCTAssertFalse(sut.errorLabel.isHidden)
-//    }
+    func testErrorLabelShownWithWrongCityField() {
+        sut.cityField.text = "Москва"
+        
+        sut.getWeatherByCityButtonTapped(getWeatherButton)
+        
+        XCTAssertFalse(sut.errorLabel.isHidden)
+    }
     
     func testErrorLabelHiddenWithCorrectValue() {
         sut.cityField.text = "Moscow"
