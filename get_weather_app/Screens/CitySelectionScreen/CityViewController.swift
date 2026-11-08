@@ -9,6 +9,7 @@ import UIKit
 import _LocationEssentials
 import CoreLocation
 
+@MainActor
 final class CityViewController: UIViewController {
     
     @IBOutlet weak var cityField: UITextField!
@@ -22,7 +23,7 @@ final class CityViewController: UIViewController {
     
     var locationService: LocationServiceProtocol = LocationService()
     var forecast: [WeatherData] = []
-    var coordinate: CLLocationCoordinate2D?
+    var locationCoordinates: CLLocationCoordinate2D?
     var city: String { cityField.text ?? "" }
     
     override func viewDidLoad() {
@@ -67,30 +68,45 @@ final class CityViewController: UIViewController {
         loader.isHidden = false
         
         Task {
-            await getCoordinates()
-        }
-        
-        guard let coordinate = coordinate else {
-            errorLabel.text = "Don't know your location. Try again."
-            loader.isHidden = true
-            
-            return
-        }
-        
-        Task {
             do {
-                loader.isHidden = false
-                forecast = try await viewModel.getWeatherByLocation(lat: coordinate.latitude, lon: coordinate.longitude)
+                locationCoordinates = try await locationService.requestLocation()
+                
+                guard let locationCoordinates = locationCoordinates else {
+                    errorLabel.text = "Don't know your location. Try again."
+                    loader.isHidden = true
+                    
+                    return
+                }
+                
+                forecast = try await viewModel.getWeatherByLocation(
+                    lat: locationCoordinates.latitude,
+                    lon: locationCoordinates.longitude
+                )
+                
                 loader.isHidden = true
                 
                 performSegue(withIdentifier: "goToWeatherScreen", sender: self)
+            } catch let locationError as LocationError {
+                errorLabel.isHidden = false
+                loader.isHidden = true
+                
+                switch locationError {
+                case .permissionDenied:
+                    errorLabel.text = "Access denied"
+                
+                case .noLocation:
+                    errorLabel.text = "Can't find location"
+                
+                case .unknown:
+                    errorLabel.text = "Unknown location error"
+                }
             } catch let error as GetWeatherError {
                 errorLabel.text = error.errorDescription
                 errorLabel.isHidden = false
                 loader.isHidden = true
             } catch {
-                errorLabel.text = "Unknown error"
                 errorLabel.isHidden = false
+                errorLabel.text = "Unknown error"
                 loader.isHidden = true
             }
         }
@@ -113,7 +129,7 @@ final class CityViewController: UIViewController {
             
             destinationVC.forecast = self.forecast
             
-            if city.isEmpty { destinationVC.city = " in your location"} else { destinationVC.city = self.city }
+            if city.isEmpty { destinationVC.city = " your location"} else { destinationVC.city = self.city }
         }
     }
     
@@ -121,32 +137,6 @@ final class CityViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
         errorLabel.isHidden = true
-    }
-    
-    private func getCoordinates() async -> CLLocationCoordinate2D? {
-        do {
-            coordinate = try await locationService.requestLocation()
-            
-            return coordinate
-        } catch let locationError as LocationError {
-            errorLabel.isHidden = false
-            loader.isHidden = true
-            
-            switch locationError {
-            case .permissionDenied:
-                errorLabel.text = "Access denied"
-            case .noLocation:
-                errorLabel.text = "Can't find location"
-            case .unknown:
-                errorLabel.text = "Unknown location error"
-            }
-        } catch {
-            errorLabel.isHidden = false
-            errorLabel.text = "Unknown error"
-            loader.isHidden = true
-        }
-        
-        return nil
     }
 }
 

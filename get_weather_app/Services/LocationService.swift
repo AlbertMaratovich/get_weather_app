@@ -8,80 +8,87 @@
 import CoreLocation
 
 class LocationService: NSObject, CLLocationManagerDelegate, LocationServiceProtocol {
-
-    let manager = CLLocationManager()
+    private let manager = CLLocationManager()
     private var continuation: CheckedContinuation<CLLocationCoordinate2D, Error>?
 
     override init() {
         super.init()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
     }
 
-    // выполняет запрос и получает локацию пользователя
     func requestLocation() async throws -> CLLocationCoordinate2D {
+        let status = manager.authorizationStatus
 
-        switch manager.authorizationStatus {
+        switch status {
+        case .notDetermined:
+            return try await withCheckedThrowingContinuation { continuation in
+                self.continuation = continuation
+                manager.requestWhenInUseAuthorization()
+            }
+            
         case .denied, .restricted:
             throw LocationError.permissionDenied
+            
         case .authorizedAlways, .authorizedWhenInUse:
-            break
-        case .notDetermined:
-            manager.requestWhenInUseAuthorization()
+            return try await withCheckedThrowingContinuation { continuation in
+                self.continuation = continuation
+                manager.desiredAccuracy = kCLLocationAccuracyBest
+                manager.startUpdatingLocation()
+            }
+            
         @unknown default:
             throw LocationError.unknown
         }
+    }
 
-        do {
-            return try await withCheckedThrowingContinuation { continuation in
-                self.continuation = continuation
-                manager.requestLocation()
-            }
-        } catch let error as CLError {
+    // MARK: - CLLocationManagerDelegate (Разрешения)
 
-            switch error.code {
-            case .denied:
-                throw LocationError.permissionDenied
-            case .locationUnknown:
-                throw LocationError.noLocation
-            default:
-                throw LocationError.unknown
-            }
-        } catch {
-            throw LocationError.unknown
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let status = manager.authorizationStatus
+        
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            manager.desiredAccuracy = kCLLocationAccuracyBest
+            manager.startUpdatingLocation()
+            
+        case .denied, .restricted:
+            continuation?.resume(throwing: LocationError.permissionDenied)
+            continuation = nil
+            
+        case .notDetermined:
+            break
+            
+        @unknown default:
+            break
         }
     }
 
-    // MARK: - CLLocationManagerDelegate
+    // MARK: - CLLocationManagerDelegate (Координаты)
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let loc = locations.last else {
-            continuation?.resume(throwing: LocationError.noLocation)
-            continuation = nil
-            return
-        }
+        guard let location = locations.first else { return }
+        manager.stopUpdatingLocation()
         
-        continuation?.resume(returning: loc.coordinate)
+        continuation?.resume(returning: location.coordinate)
         continuation = nil
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        continuation?.resume(throwing: error)
-        continuation = nil
-    }
-
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        guard let continuation = continuation else { return }
+        manager.stopUpdatingLocation()
         
-        switch manager.authorizationStatus {
-        case .authorizedAlways, .authorizedWhenInUse:
-            manager.requestLocation()
-        case .denied, .restricted:
-            continuation.resume(throwing: LocationError.permissionDenied)
-        
-            self.continuation = nil
-        default:
-            break
+        if let clError = error as? CLError {
+            switch clError.code {
+            case .denied:
+                continuation?.resume(throwing: LocationError.permissionDenied)
+            case .locationUnknown:
+                continuation?.resume(throwing: LocationError.noLocation)
+            default:
+                continuation?.resume(throwing: LocationError.unknown)
+            }
+        } else {
+            continuation?.resume(throwing: LocationError.unknown)
         }
+        continuation = nil
     }
 }
 

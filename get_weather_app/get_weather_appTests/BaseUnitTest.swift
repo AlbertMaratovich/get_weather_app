@@ -9,6 +9,7 @@ import Testing
 import XCTest
 @testable import get_weather_app
 
+@MainActor
 class BaseUnitTest: XCTestCase {
 
     override func setUp() {
