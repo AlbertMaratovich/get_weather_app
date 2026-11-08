@@ -12,7 +12,6 @@ class BaseScreen {
     
     init(app: XCUIApplication) {
         self.app = app
-        print("App launched")
     }
     
     func hideKeyboard() {

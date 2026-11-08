@@ -9,76 +9,100 @@ import UIKit
 import _LocationEssentials
 import CoreLocation
 
-class CityViewController: UIViewController {
+final class CityViewController: UIViewController {
     
     @IBOutlet weak var cityField: UITextField!
     @IBOutlet weak var getWeatherButton: UIButton!
     @IBOutlet weak var logOutButton: UIButton!
-    @IBOutlet weak var validationErrorLabel: UILabel!
-    @IBOutlet weak var cityLoader: UIActivityIndicatorView!
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var loader: UIActivityIndicatorView!
     
     let service = NetworkService()
-    let cityViewModel = CityViewModel()
-    var forecast: [WeatherData] = []
+    let viewModel = CityViewModel()
+    
     var locationService: LocationServiceProtocol = LocationService()
-    var city: String? { cityField.text }
+    var forecast: [WeatherData] = []
+    var coordinate: CLLocationCoordinate2D?
+    var city: String { cityField.text ?? "" }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         cityField.delegate = self
-        
-        print("1. CityViewController viewDidLoad Иерархия создана, но экран еще не виден")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("2. CityViewController viewWillAppear Экран почти загрузился")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("3. CityViewController viewDidAppear Экран полностью отрисован. Можно запускать анимашки")
     }
     
     // реализация функции тапа на кнопку получения погоды
-    @IBAction func getWeatherButtonTapped(_ sender: UIButton) {
-        print("Нажата кнопка получения погоды")
-        
-        let city = self.city ?? ""
-        
-        if cityViewModel.validateCity(city: city) {
-            Task {
-                do {
-                    cityLoader.isHidden = false
-                    forecast = try await service.getWeather(city: city)
-                    print("Отправляем запрос за погодой")
-                    performSegue(withIdentifier: "goToWeatherScreen", sender: self)
-                    cityLoader.isHidden = true
-                    cityField.text = nil
-                } catch {
-                    print("Не прошла валидация данных", error)
-                    validationErrorLabel.text = "Can't find this city. Try again"
-                    validationErrorLabel.isHidden = false
-                    cityLoader.isHidden = true
-                }
+    @IBAction func getWeatherByCityButtonTapped(_ sender: UIButton) {
+        Task {
+            do {
+                loader.isHidden = false
+                forecast = try await viewModel.getWeather(city: city)
+                loader.isHidden = true
+                
+                performSegue(withIdentifier: "goToWeatherScreen", sender: self)
+                
+                cityField.text = nil
+            } catch let error as GetWeatherError {
+                errorLabel.text = error.errorDescription
+                errorLabel.isHidden = false
+                loader.isHidden = true
+            } catch {
+                errorLabel.text = "Unknown error"
+                errorLabel.isHidden = false
+                loader.isHidden = true
             }
-        } else {
-            print("Validation error")
-            validationErrorLabel.text = "Please enter valid city name"
-            validationErrorLabel.isHidden = false
+        }
+    }
+    
+    // нажатие на кнопку получения погоды по геолокации
+    @IBAction func getWeatherByLocationButtonTapped(_ sender: Any) {
+        loader.isHidden = false
+        
+        Task {
+            await getCoordinates()
+        }
+        
+        guard let coordinate = coordinate else {
+            errorLabel.text = "Don't know your location. Try again."
+            loader.isHidden = true
+            
+            return
+        }
+        
+        Task {
+            do {
+                loader.isHidden = false
+                forecast = try await viewModel.getWeatherByLocation(lat: coordinate.latitude, lon: coordinate.longitude)
+                loader.isHidden = true
+                
+                performSegue(withIdentifier: "goToWeatherScreen", sender: self)
+            } catch let error as GetWeatherError {
+                errorLabel.text = error.errorDescription
+                errorLabel.isHidden = false
+                loader.isHidden = true
+            } catch {
+                errorLabel.text = "Unknown error"
+                errorLabel.isHidden = false
+                loader.isHidden = true
+            }
         }
     }
     
     // подпись на событие editingDidBegin поля ввода города
     @IBAction func editingDidBegin(_ sender: Any) {
-        validationErrorLabel.isHidden = true
+        errorLabel.isHidden = true
     }
     
     // реализация функции тапа на кнопку выхода из аккаунта
     @IBAction func logOutButtonTapped(_ sender: UIButton) {
-        // удаляет текущий экран и возвращает на предыдущий
-        print("Нажата кнопка Выйти")
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -86,63 +110,43 @@ class CityViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToWeatherScreen" {
             let destinationVC = segue.destination as! WeatherViewController
+            
             destinationVC.forecast = self.forecast
-            if let city = self.city {
-                if city == "" {
-                    destinationVC.city = " your location"
-                } else {
-                    destinationVC.city = city
-                }
-            } else { destinationVC.city = " your location" }
+            
+            if city.isEmpty { destinationVC.city = " in your location"} else { destinationVC.city = self.city }
         }
     }
     
-    func loadWeatherByLocation() async {
+    // событие тача (деактивация полей)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+        errorLabel.isHidden = true
+    }
+    
+    private func getCoordinates() async -> CLLocationCoordinate2D? {
         do {
-            let coordinate = try await locationService.requestLocation()
-
-            forecast = try await service.getWeatherByGeo(lat: coordinate.latitude, lon: coordinate.longitude)
-            print("Отправляем запрос за погодой")
-            performSegue(withIdentifier: "goToWeatherScreen", sender: self)
-            cityLoader.isHidden = true
+            coordinate = try await locationService.requestLocation()
+            
+            return coordinate
         } catch let locationError as LocationError {
-            validationErrorLabel.isHidden = false
-            cityLoader.isHidden = true
+            errorLabel.isHidden = false
+            loader.isHidden = true
             
             switch locationError {
             case .permissionDenied:
-                print("Пользователь запретил доступ к геолокации")
-                validationErrorLabel.text = "Access denied"
+                errorLabel.text = "Access denied"
             case .noLocation:
-                print("Не удалось определить координаты")
-                validationErrorLabel.text = "Can't define location"
+                errorLabel.text = "Can't find location"
             case .unknown:
-                print("Неизвестная ошибка геолокации")
-                validationErrorLabel.text = "Unknown locationerror"
+                errorLabel.text = "Unknown location error"
             }
         } catch {
-            validationErrorLabel.isHidden = false
-            cityLoader.isHidden = true
-            validationErrorLabel.text = "Can't find this city. Try again"
-            
-            print("Сетевая ошибка:\n", error)
+            errorLabel.isHidden = false
+            errorLabel.text = "Unknown error"
+            loader.isHidden = true
         }
-    }
-    
-    // нажатие на кнопку получения погоды по геолокации
-    @IBAction func getCityByLocation(_ sender: Any) {
-        print("Нажата получения погоды по геолокации")
-        cityLoader.isHidden = false
         
-        Task {
-            await loadWeatherByLocation()
-        }
-    }
-    
-    // событие тача
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // Это снимет курсор и деактивирует поле
-        view.endEditing(true)
+        return nil
     }
 }
 
@@ -150,13 +154,13 @@ class CityViewController: UIViewController {
 extension CityViewController: UITextFieldDelegate {
     // Срабатывает в момент нажатия на текстовое поле нужен для скрытие клавиатуры
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        validationErrorLabel.isHidden = true
+        errorLabel.isHidden = true
     }
     
     // скрывает клавиатуру после нажатия на кнопку enter
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // заставляет текстовое поле "отдать" фокус и спрятать клавиатуру
         textField.resignFirstResponder()
+        
         return true
     }
 }

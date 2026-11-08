@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B5d-Z4-Vx0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B5d-Z4-Vx0">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <accessibilityOverrides isEnabled="YES"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -115,7 +115,7 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Get weather"/>
                                 <connections>
-                                    <action selector="getWeatherButtonTapped:" destination="nRy-Ew-jd4" eventType="touchUpInside" id="oh9-hB-dJr"/>
+                                    <action selector="getWeatherByCityButtonTapped:" destination="nRy-Ew-jd4" eventType="touchUpInside" id="d0L-EI-wFS"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FLG-Xy-BRD">
@@ -150,7 +150,7 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Weather by my location"/>
                                 <connections>
-                                    <action selector="getCityByLocation:" destination="nRy-Ew-jd4" eventType="touchUpInside" id="t3f-oY-ScC"/>
+                                    <action selector="getWeatherByLocationButtonTapped:" destination="nRy-Ew-jd4" eventType="touchUpInside" id="AxR-yl-i58"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -160,10 +160,10 @@
                     <navigationItem key="navigationItem" id="D1Q-m2-oNT"/>
                     <connections>
                         <outlet property="cityField" destination="fbY-Wa-qh0" id="YPN-eS-cvB"/>
-                        <outlet property="cityLoader" destination="4gp-QT-c3w" id="xHD-rk-Gml"/>
+                        <outlet property="errorLabel" destination="StE-vE-Ycr" id="UEF-PI-CX4"/>
                         <outlet property="getWeatherButton" destination="GU7-YZ-cxH" id="mCh-NS-nQv"/>
+                        <outlet property="loader" destination="4gp-QT-c3w" id="xHD-rk-Gml"/>
                         <outlet property="logOutButton" destination="FLG-Xy-BRD" id="map-bS-qOH"/>
-                        <outlet property="validationErrorLabel" destination="StE-vE-Ycr" id="UEF-PI-CX4"/>
                         <segue destination="a4U-qc-AL4" kind="show" identifier="goToWeatherScreen" id="acn-BB-AMS"/>
                     </connections>
                 </viewController>
@@ -263,13 +263,13 @@
     </scenes>
     <resources>
         <systemColor name="opaqueSeparatorColor">
-            <color red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemPinkColor">
-            <color red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

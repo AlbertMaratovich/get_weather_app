@@ -20,14 +20,12 @@ final class WeatherScreen: BaseScreen {
     
     func validateTable() -> Bool {
         guard weatherTableView.waitForExistence(timeout: 5) else {
-            print("Ошибка: Таблица погоды не найдена")
             return false
         }
         
         for (index, text) in expectedLabels.enumerated() {
             let cell = weatherTableView.cells.element(boundBy: index)
             if !cell.exists || !cell.label.contains(text) {
-                print("Ошибка: Ячейка \(index) не содержит текст \(text)")
                 return false
             }
         }

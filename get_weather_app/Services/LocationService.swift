@@ -18,20 +18,16 @@ class LocationService: NSObject, CLLocationManagerDelegate, LocationServiceProto
         manager.desiredAccuracy = kCLLocationAccuracyBest
     }
 
-    // MARK: - Async function to get location
+    // выполняет запрос и получает локацию пользователя
     func requestLocation() async throws -> CLLocationCoordinate2D {
 
         switch manager.authorizationStatus {
-
         case .denied, .restricted:
             throw LocationError.permissionDenied
-
         case .authorizedAlways, .authorizedWhenInUse:
             break
-
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
-
         @unknown default:
             throw LocationError.unknown
         }
@@ -44,17 +40,13 @@ class LocationService: NSObject, CLLocationManagerDelegate, LocationServiceProto
         } catch let error as CLError {
 
             switch error.code {
-
             case .denied:
                 throw LocationError.permissionDenied
-
             case .locationUnknown:
                 throw LocationError.noLocation
-
             default:
                 throw LocationError.unknown
             }
-
         } catch {
             throw LocationError.unknown
         }
@@ -67,6 +59,7 @@ class LocationService: NSObject, CLLocationManagerDelegate, LocationServiceProto
             continuation = nil
             return
         }
+        
         continuation?.resume(returning: loc.coordinate)
         continuation = nil
     }
@@ -78,12 +71,16 @@ class LocationService: NSObject, CLLocationManagerDelegate, LocationServiceProto
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         guard let continuation = continuation else { return }
-        if manager.authorizationStatus == .authorizedWhenInUse ||
-           manager.authorizationStatus == .authorizedAlways {
+        
+        switch manager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
             manager.requestLocation()
-        } else if manager.authorizationStatus == .denied || manager.authorizationStatus == .restricted {
+        case .denied, .restricted:
             continuation.resume(throwing: LocationError.permissionDenied)
+        
             self.continuation = nil
+        default:
+            break
         }
     }
 }

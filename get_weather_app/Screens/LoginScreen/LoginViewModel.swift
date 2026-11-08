@@ -10,10 +10,6 @@ struct LoginViewModel {
     private let pass = "123456"
     
     func canLogin(user: String, pass: String) -> Bool {
-        if user == self.login && pass == self.pass {
-            return true
-        } else {
-            return false
-        }
+        return user == self.login && pass == self.pass
     }
 }

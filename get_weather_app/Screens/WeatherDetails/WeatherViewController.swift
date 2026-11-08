@@ -14,29 +14,34 @@ class WeatherViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var todayInLabel: UILabel!
     
     let service = NetworkService()
+    
     var city: String = ""
     var forecast: [WeatherData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("1. WeatherViewController viewDidLoad Иерархия создана, но экран еще не виден")
         tableView.accessibilityIdentifier = "weather_table_view"
-        
-        // Привязка контроллера, задающего данные для таблицы
         tableView.dataSource = self
-        
         todayInLabel.text = "Today in \(city)"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("2. WeatherViewController viewWillAppear Экран почти загрузился")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("3. WeatherViewController viewDidAppear Экран полностью отрисован. Можно запускать анимашки")
+    }
+    
+    // реализация перехода на предыдущий экран
+    @IBAction func backButtonPressed(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    // реализация жеста свайп-бэк
+    @IBAction func swipeToCityView(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     // расчет количества строк, которые необходимо отрисовать
@@ -53,18 +58,5 @@ class WeatherViewController: UIViewController, UITableViewDataSource {
         cell.accessibilityIdentifier = "weather_cell_\(indexPath.row)"
         
         return cell
-    }
-    
-    // реализация перехода на предыдущий экран
-    @IBAction func backButtonPressed(_ sender: Any) {
-        // удаляет текущий экран и возвращает на предыдущий
-        print("Нажата кнопка Назад")
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    // реализация жеста свайп-бэк
-    @IBAction func swipeToCityView(_ sender: Any) {
-        print("Выполнен жест назад")
-        self.navigationController?.popViewController(animated: true)
     }
 }
