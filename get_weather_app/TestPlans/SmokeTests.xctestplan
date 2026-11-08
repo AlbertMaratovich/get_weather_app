@@ -32,8 +32,6 @@
     {
       "parallelizable" : false,
       "selectedTests" : [
-        "CityViewControllerTests\/testErrorLabelShownWithEmptyCityField()",
-        "CityViewControllerTests\/testGettingWeatherWithoutPermission()",
         "LoginViewControllerTests\/testCheckErrorLabelShown()",
         "LoginViewModelTests\/testCanLoginWithValidData()",
         "LoginViewModelTests\/testCanNotLoginWithWrongPassword()"

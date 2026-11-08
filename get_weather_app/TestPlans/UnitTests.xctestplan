@@ -17,8 +17,7 @@
     {
       "parallelizable" : false,
       "skippedTests" : [
-        "BaseUnitTest",
-        "CityViewControllerTests\/testGettingWeatherByPermission()"
+        "BaseUnitTest"
       ],
       "target" : {
         "containerPath" : "container:get_weather_app.xcodeproj",
